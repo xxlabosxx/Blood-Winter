@@ -1,0 +1,192 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://data/resources/weapon_data.gd" id="1_weapon"]
+[ext_resource type="Script" path="res://data/resources/combo_step_data.gd" id="2_step"]
+
+[sub_resource type="Resource" id="Resource_g1"]
+script = ExtResource("2_step")
+step_name = "G1: Silver Flick"
+is_aerial = false
+is_launcher = false
+damage_multiplier = 0.85
+startup_time = 0.06
+active_time = 0.08
+recovery_time = 0.18
+combo_window_start = 0.11
+cancel_dodge_time = 0.08
+cancel_jump_time = 0.13
+cancel_skill_time = 0.07
+forward_impulse = 6.2
+vertical_launch_force = 0.0
+attacker_air_lift = 0.0
+knockback_force = 2.2
+hitstop_duration = 0.03
+screen_shake_intensity = 0.07
+hitbox_size = Vector3(1.9, 1.3, 2.2)
+hitbox_offset = Vector3(0.0, 1.0, -1.3)
+swing_start_angle_deg = -70.0
+swing_end_angle_deg = 78.0
+swing_tilt_deg = 10.0
+
+[sub_resource type="Resource" id="Resource_g2"]
+script = ExtResource("2_step")
+step_name = "G2: Twin Scissor"
+is_aerial = false
+is_launcher = false
+damage_multiplier = 1.0
+startup_time = 0.06
+active_time = 0.09
+recovery_time = 0.19
+combo_window_start = 0.12
+cancel_dodge_time = 0.08
+cancel_jump_time = 0.13
+cancel_skill_time = 0.08
+forward_impulse = 7.4
+vertical_launch_force = 0.0
+attacker_air_lift = 0.0
+knockback_force = 2.8
+hitstop_duration = 0.035
+screen_shake_intensity = 0.09
+hitbox_size = Vector3(2.0, 1.4, 2.3)
+hitbox_offset = Vector3(0.0, 1.0, -1.35)
+swing_start_angle_deg = 85.0
+swing_end_angle_deg = -85.0
+swing_tilt_deg = -15.0
+
+[sub_resource type="Resource" id="Resource_g3"]
+script = ExtResource("2_step")
+step_name = "G3: Scarlet Flurry"
+is_aerial = false
+is_launcher = false
+damage_multiplier = 1.4
+startup_time = 0.08
+active_time = 0.11
+recovery_time = 0.25
+combo_window_start = 0.20
+cancel_dodge_time = 0.12
+cancel_jump_time = 0.17
+cancel_skill_time = 0.10
+forward_impulse = 8.6
+vertical_launch_force = 3.2
+attacker_air_lift = 0.0
+knockback_force = 7.2
+hitstop_duration = 0.055
+screen_shake_intensity = 0.18
+hitbox_size = Vector3(2.2, 1.6, 2.6)
+hitbox_offset = Vector3(0.0, 1.0, -1.5)
+swing_start_angle_deg = -110.0
+swing_end_angle_deg = 115.0
+swing_tilt_deg = 32.0
+
+[sub_resource type="Resource" id="Resource_launcher"]
+script = ExtResource("2_step")
+step_name = "Launcher: Moonrise Vault"
+is_aerial = false
+is_launcher = true
+damage_multiplier = 1.1
+startup_time = 0.08
+active_time = 0.11
+recovery_time = 0.20
+combo_window_start = 0.13
+cancel_dodge_time = 0.11
+cancel_jump_time = 0.11
+cancel_skill_time = 0.10
+forward_impulse = 6.0
+vertical_launch_force = 11.2
+attacker_air_lift = 10.2
+knockback_force = 1.8
+hitstop_duration = 0.05
+screen_shake_intensity = 0.15
+hitbox_size = Vector3(2.0, 2.6, 2.4)
+hitbox_offset = Vector3(0.0, 1.4, -1.3)
+swing_start_angle_deg = -120.0
+swing_end_angle_deg = 70.0
+swing_tilt_deg = 82.0
+
+[sub_resource type="Resource" id="Resource_a1"]
+script = ExtResource("2_step")
+step_name = "A1: Night Talon"
+is_aerial = true
+is_launcher = false
+damage_multiplier = 0.95
+startup_time = 0.05
+active_time = 0.09
+recovery_time = 0.16
+combo_window_start = 0.10
+cancel_dodge_time = 0.08
+cancel_jump_time = 0.12
+cancel_skill_time = 0.07
+forward_impulse = 3.8
+vertical_launch_force = 5.0
+attacker_air_lift = 4.6
+knockback_force = 1.4
+hitstop_duration = 0.035
+screen_shake_intensity = 0.10
+hitbox_size = Vector3(2.2, 1.7, 2.4)
+hitbox_offset = Vector3(0.0, 0.9, -1.3)
+swing_start_angle_deg = -88.0
+swing_end_angle_deg = 90.0
+swing_tilt_deg = 14.0
+
+[sub_resource type="Resource" id="Resource_a2"]
+script = ExtResource("2_step")
+step_name = "A2: Crimson Spiral"
+is_aerial = true
+is_launcher = false
+damage_multiplier = 1.1
+startup_time = 0.05
+active_time = 0.09
+recovery_time = 0.17
+combo_window_start = 0.11
+cancel_dodge_time = 0.08
+cancel_jump_time = 0.12
+cancel_skill_time = 0.07
+forward_impulse = 4.0
+vertical_launch_force = 5.2
+attacker_air_lift = 4.8
+knockback_force = 1.5
+hitstop_duration = 0.04
+screen_shake_intensity = 0.12
+hitbox_size = Vector3(2.3, 1.8, 2.5)
+hitbox_offset = Vector3(0.0, 0.9, -1.3)
+swing_start_angle_deg = 95.0
+swing_end_angle_deg = -95.0
+swing_tilt_deg = -22.0
+
+[sub_resource type="Resource" id="Resource_a3"]
+script = ExtResource("2_step")
+step_name = "A3: Eclipse Plunge"
+is_aerial = true
+is_launcher = false
+damage_multiplier = 1.5
+startup_time = 0.08
+active_time = 0.12
+recovery_time = 0.24
+combo_window_start = 0.20
+cancel_dodge_time = 0.12
+cancel_jump_time = 0.18
+cancel_skill_time = 0.11
+forward_impulse = 5.5
+vertical_launch_force = -10.5
+attacker_air_lift = -6.0
+knockback_force = 6.2
+hitstop_duration = 0.065
+screen_shake_intensity = 0.21
+hitbox_size = Vector3(2.4, 2.2, 2.6)
+hitbox_offset = Vector3(0.0, 0.6, -1.45)
+swing_start_angle_deg = -125.0
+swing_end_angle_deg = 125.0
+swing_tilt_deg = 68.0
+
+[resource]
+script = ExtResource("1_weapon")
+weapon_name = "Silver Twinblade"
+base_damage = 20.0
+attack_range = 2.3
+attack_speed = 1.22
+blade_length = 1.45
+blade_color = Color(0.86, 0.92, 0.98, 1.0)
+trail_color = Color(1.0, 0.12, 0.24, 1.0)
+ground_combo = Array[ExtResource("2_step")]([SubResource("Resource_g1"), SubResource("Resource_g2"), SubResource("Resource_g3")])
+launcher_step = SubResource("Resource_launcher")
+air_combo = Array[ExtResource("2_step")]([SubResource("Resource_a1"), SubResource("Resource_a2"), SubResource("Resource_a3")])

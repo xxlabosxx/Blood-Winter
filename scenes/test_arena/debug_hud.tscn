@@ -1,0 +1,216 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scenes/test_arena/debug_hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.05, 0.06, 0.09, 0.78)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.75, 0.1, 0.18, 0.85)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_cold"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.05, 0.07, 0.11, 0.78)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.72, 0.88, 0.75)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="DebugHUD" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="MarginRoot" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="TopLeftColumn" type="VBoxContainer" parent="MarginRoot"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="PlayerPanel" type="PanelContainer" parent="MarginRoot/TopLeftColumn"]
+custom_minimum_size = Vector2(430, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="PlayerInfoLabel" type="RichTextLabel" parent="MarginRoot/TopLeftColumn/PlayerPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = "Loading Hunter Telemetry..."
+fit_content = true
+scroll_active = false
+
+[node name="EnemyPanel" type="PanelContainer" parent="MarginRoot/TopLeftColumn"]
+custom_minimum_size = Vector2(430, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_cold")
+
+[node name="EnemyInfoLabel" type="RichTextLabel" parent="MarginRoot/TopLeftColumn/EnemyPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = "Loading Target Telemetry..."
+fit_content = true
+scroll_active = false
+
+[node name="TopRightColumn" type="VBoxContainer" parent="MarginRoot"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="WorldPanel" type="PanelContainer" parent="MarginRoot/TopRightColumn"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_cold")
+
+[node name="WorldVBox" type="VBoxContainer" parent="MarginRoot/TopRightColumn/WorldPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="WorldInfoLabel" type="RichTextLabel" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = "Seed & Time Cycle..."
+fit_content = true
+scroll_active = false
+
+[node name="ButtonsRow1" type="HBoxContainer" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ClassButton" type="Button" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "[C] Switch Class"
+
+[node name="CRTButton" type="Button" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow1"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "[F1] CRT: ON"
+
+[node name="ButtonsRow2" type="HBoxContainer" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SeedButton" type="Button" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow2"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "[F3] Reroll Seed"
+
+[node name="NextDayButton" type="Button" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow2"]
+layout_mode = 2
+focus_mode = 0
+text = "+1 Day"
+
+[node name="ButtonsRow3" type="HBoxContainer" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TimePauseButton" type="Button" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Time: Resume"
+
+[node name="PhaseButton" type="Button" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow3"]
+layout_mode = 2
+focus_mode = 0
+text = "Next Phase"
+
+[node name="ResetButton" type="Button" parent="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow3"]
+layout_mode = 2
+focus_mode = 0
+text = "[R] Reset"
+
+[node name="BottomLeftPanel" type="PanelContainer" parent="MarginRoot"]
+custom_minimum_size = Vector2(430, 92)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="EventLogLabel" type="RichTextLabel" parent="MarginRoot/BottomLeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = false
+text = "> Combat Gym initialized. Lock-on with TAB, Launch with RMB/F!"
+fit_content = true
+scroll_active = false
+
+[node name="ControlsPanel" type="PanelContainer" parent="MarginRoot"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_cold")
+
+[node name="ControlsLabel" type="RichTextLabel" parent="MarginRoot/ControlsPanel"]
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = "[b][color=#eef6ff]CONTROLS (F2: Hide)[/color][/b]
+[b]WASD[/b]: Move  |  [b]Space[/b]: Jump
+[b]Shift / K[/b]: Dodge (i-frames & Cancel)
+[b]LMB / J[/b]: Ground & Air Combo
+[b]RMB / F[/b]: Launcher -> Chain LMB in Air!
+[b]Q / E[/b]: Class Skill (Parry / Shadow Dash)
+[b]Tab / MMB[/b]: Lock-On  |  [b]Esc[/b]: Free Cursor
+[b]C[/b]: Switch Class  |  [b]F1[/b]: CRT  |  [b]R[/b]: Reset"
+fit_content = true
+scroll_active = false
+
+[connection signal="pressed" from="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow1/ClassButton" to="." method="_on_class_button_pressed"]
+[connection signal="pressed" from="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow1/CRTButton" to="." method="_on_crt_button_pressed"]
+[connection signal="pressed" from="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow2/SeedButton" to="." method="_on_seed_button_pressed"]
+[connection signal="pressed" from="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow2/NextDayButton" to="." method="_on_next_day_button_pressed"]
+[connection signal="pressed" from="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow3/TimePauseButton" to="." method="_on_time_pause_button_pressed"]
+[connection signal="pressed" from="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow3/PhaseButton" to="." method="_on_phase_button_pressed"]
+[connection signal="pressed" from="MarginRoot/TopRightColumn/WorldPanel/WorldVBox/ButtonsRow3/ResetButton" to="." method="_on_reset_button_pressed"]

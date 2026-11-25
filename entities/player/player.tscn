@@ -1,0 +1,186 @@
+[gd_scene load_steps=29 format=3]
+
+[ext_resource type="Script" path="res://entities/player/player.gd" id="1_player"]
+[ext_resource type="Resource" path="res://data/classes/vanguard_inquisitor.tres" id="2_class"]
+[ext_resource type="Script" path="res://combat/health_component.gd" id="3_health"]
+[ext_resource type="Script" path="res://combat/hurtbox_3d.gd" id="4_hurtbox"]
+[ext_resource type="Script" path="res://combat/hitbox_3d.gd" id="5_hitbox"]
+[ext_resource type="Script" path="res://combat/weapon_trail_3d.gd" id="6_trail"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="7_sm"]
+[ext_resource type="Script" path="res://entities/player/states/player_idle_state.gd" id="8_idle"]
+[ext_resource type="Script" path="res://entities/player/states/player_move_state.gd" id="9_move"]
+[ext_resource type="Script" path="res://entities/player/states/player_air_state.gd" id="10_air"]
+[ext_resource type="Script" path="res://entities/player/states/player_dodge_state.gd" id="11_dodge"]
+[ext_resource type="Script" path="res://entities/player/states/player_attack_state.gd" id="12_attack"]
+[ext_resource type="Script" path="res://entities/player/states/player_skill_state.gd" id="13_skill"]
+[ext_resource type="Script" path="res://entities/player/states/player_hitstun_state.gd" id="14_hitstun"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.38
+height = 1.75
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurt"]
+radius = 0.44
+height = 1.75
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cloak"]
+top_radius = 0.28
+bottom_radius = 0.46
+height = 1.28
+radial_segments = 8
+
+[sub_resource type="BoxMesh" id="BoxMesh_shoulders"]
+size = Vector3(0.76, 0.22, 0.36)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_iron"]
+albedo_color = Color(0.14, 0.15, 0.19, 1)
+metallic = 0.55
+roughness = 0.48
+
+[sub_resource type="BoxMesh" id="BoxMesh_hood"]
+size = Vector3(0.36, 0.38, 0.38)
+
+[sub_resource type="BoxMesh" id="BoxMesh_visor"]
+size = Vector3(0.26, 0.08, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_visor"]
+shading_mode = 0
+albedo_color = Color(0.82, 0.92, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_scarf"]
+size = Vector3(0.46, 0.14, 0.44)
+
+[sub_resource type="TorusMesh" id="TorusMesh_parry"]
+inner_radius = 0.65
+outer_radius = 0.82
+rings = 16
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_parry"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(1, 0.12, 0.22, 0.85)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hilt"]
+size = Vector3(0.32, 0.07, 0.24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_blade"]
+size = Vector3(0.08, 1.55, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hit"]
+size = Vector3(2.1, 1.5, 2.5)
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_player")
+class_data = ExtResource("2_class")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_health")
+max_health = 130.0
+
+[node name="Hurtbox3D" type="Area3D" parent="."]
+collision_layer = 32
+collision_mask = 16
+script = ExtResource("4_hurtbox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_hurt")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="BodyCloak" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68, 0)
+mesh = SubResource("CylinderMesh_cloak")
+
+[node name="Shoulders" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24, 0)
+mesh = SubResource("BoxMesh_shoulders")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_iron")
+
+[node name="HeadHood" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.56, 0)
+mesh = SubResource("BoxMesh_hood")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_iron")
+
+[node name="VisorEyes" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.56, -0.18)
+mesh = SubResource("BoxMesh_visor")
+surface_material_override/0 = SubResource("StandardMaterial3D_visor")
+
+[node name="CrimsonScarf" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34, 0)
+mesh = SubResource("BoxMesh_scarf")
+
+[node name="ParryAuraMesh" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 1.05, -0.45)
+cast_shadow = 0
+mesh = SubResource("TorusMesh_parry")
+surface_material_override/0 = SubResource("StandardMaterial3D_parry")
+
+[node name="WeaponPivot" type="Node3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 1.04, -0.1)
+
+[node name="HiltMesh" type="MeshInstance3D" parent="VisualRoot/WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.12)
+mesh = SubResource("BoxMesh_hilt")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_iron")
+
+[node name="BladeMesh" type="MeshInstance3D" parent="VisualRoot/WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.98)
+mesh = SubResource("BoxMesh_blade")
+
+[node name="TrailBase" type="Marker3D" parent="VisualRoot/WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.22)
+
+[node name="TrailTip" type="Marker3D" parent="VisualRoot/WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.78)
+
+[node name="WeaponTrail3D" type="MeshInstance3D" parent="VisualRoot/WeaponPivot" node_paths=PackedStringArray("base_marker", "tip_marker")]
+script = ExtResource("6_trail")
+base_marker = NodePath("../TrailBase")
+tip_marker = NodePath("../TrailTip")
+trail_color = Color(0.95, 0.08, 0.16, 0.92)
+trail_lifetime = 0.2
+
+[node name="Hitbox3D" type="Area3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1.45)
+collision_layer = 8
+collision_mask = 64
+script = ExtResource("5_hitbox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualRoot/Hitbox3D"]
+shape = SubResource("BoxShape3D_hit")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("7_sm")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("8_idle")
+
+[node name="Move" type="Node" parent="StateMachine"]
+script = ExtResource("9_move")
+
+[node name="Air" type="Node" parent="StateMachine"]
+script = ExtResource("10_air")
+
+[node name="Dodge" type="Node" parent="StateMachine"]
+script = ExtResource("11_dodge")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("12_attack")
+
+[node name="Skill" type="Node" parent="StateMachine"]
+script = ExtResource("13_skill")
+
+[node name="Hitstun" type="Node" parent="StateMachine"]
+script = ExtResource("14_hitstun")

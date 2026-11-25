@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="HunterClassData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/resources/hunter_class_data.gd" id="1_class"]
+[ext_resource type="Resource" path="res://data/weapons/silver_twinblade.tres" id="2_weapon"]
+
+[resource]
+script = ExtResource("1_class")
+class_name_display = "Night Stalker"
+description = "High-mobility scout and relic hunter. Enhanced dodge i-frames, superior loot/relic identification, and Shadow Dash blink-slash."
+max_health = 100.0
+move_speed = 8.5
+jump_velocity = 9.9
+dodge_speed_multiplier = 2.55
+dodge_duration = 0.24
+dodge_iframe_duration = 0.23
+dodge_cooldown = 0.18
+loot_bonus_multiplier = 1.45
+identification_bonus = 0.40
+special_skill = 2
+special_skill_name = "Shadow Dash"
+special_skill_cooldown = 1.60
+parry_window = 0.22
+parry_counter_damage_multiplier = 1.6
+shadow_dash_distance_multiplier = 3.1
+cloak_color = Color(0.11, 0.13, 0.18, 1.0)
+accent_color = Color(1.0, 0.18, 0.30, 1.0)
+default_weapon = ExtResource("2_weapon")

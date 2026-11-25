@@ -1,0 +1,187 @@
+[gd_scene load_steps=27 format=3]
+
+[ext_resource type="Script" path="res://entities/enemies/vampire_duelist/vampire_duelist.gd" id="1_vamp"]
+[ext_resource type="Resource" path="res://data/enemies/crimson_duelist.tres" id="2_data"]
+[ext_resource type="Script" path="res://combat/health_component.gd" id="3_health"]
+[ext_resource type="Script" path="res://combat/hurtbox_3d.gd" id="4_hurtbox"]
+[ext_resource type="Script" path="res://combat/hitbox_3d.gd" id="5_hitbox"]
+[ext_resource type="Script" path="res://combat/weapon_trail_3d.gd" id="6_trail"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="7_sm"]
+[ext_resource type="Script" path="res://entities/enemies/vampire_duelist/states/vampire_patrol_state.gd" id="8_patrol"]
+[ext_resource type="Script" path="res://entities/enemies/vampire_duelist/states/vampire_strafe_state.gd" id="9_strafe"]
+[ext_resource type="Script" path="res://entities/enemies/vampire_duelist/states/vampire_evade_state.gd" id="10_evade"]
+[ext_resource type="Script" path="res://entities/enemies/vampire_duelist/states/vampire_attack_state.gd" id="11_attack"]
+[ext_resource type="Script" path="res://entities/enemies/vampire_duelist/states/vampire_hitstun_state.gd" id="12_hitstun"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.4
+height = 2.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurt"]
+radius = 0.52
+height = 2.05
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_body"]
+top_radius = 0.24
+bottom_radius = 0.44
+height = 1.48
+radial_segments = 8
+
+[sub_resource type="BoxMesh" id="BoxMesh_cape"]
+size = Vector3(0.82, 1.38, 0.14)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cape"]
+albedo_color = Color(0.28, 0.03, 0.07, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_head"]
+size = Vector3(0.34, 0.4, 0.34)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pale"]
+albedo_color = Color(0.76, 0.8, 0.86, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_eye"]
+size = Vector3(0.08, 0.05, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eye"]
+shading_mode = 0
+albedo_color = Color(1, 0.05, 0.12, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_blade"]
+size = Vector3(0.06, 1.65, 0.11)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blade"]
+albedo_color = Color(0.85, 0.08, 0.16, 1)
+metallic = 0.75
+roughness = 0.25
+emission_enabled = true
+emission = Color(0.72, 0.04, 0.1, 1)
+emission_energy_multiplier = 0.85
+
+[sub_resource type="TorusMesh" id="TorusMesh_telegraph"]
+inner_radius = 0.75
+outer_radius = 0.96
+rings = 16
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_telegraph"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(1, 0.06, 0.14, 0.92)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hit"]
+size = Vector3(2.1, 1.5, 2.5)
+
+[node name="VampireDuelist" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_vamp")
+enemy_data = ExtResource("2_data")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_health")
+max_health = 180.0
+
+[node name="Hurtbox3D" type="Area3D" parent="."]
+collision_layer = 64
+collision_mask = 8
+script = ExtResource("4_hurtbox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02, 0)
+shape = SubResource("CapsuleShape3D_hurt")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="BodyMesh" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
+mesh = SubResource("CylinderMesh_body")
+
+[node name="CapeMesh" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 0, 0.88, 0.32)
+mesh = SubResource("BoxMesh_cape")
+surface_material_override/0 = SubResource("StandardMaterial3D_cape")
+
+[node name="HeadMesh" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
+mesh = SubResource("BoxMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_pale")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 1.74, -0.16)
+mesh = SubResource("BoxMesh_eye")
+surface_material_override/0 = SubResource("StandardMaterial3D_eye")
+
+[node name="EyeRight" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 1.74, -0.16)
+mesh = SubResource("BoxMesh_eye")
+surface_material_override/0 = SubResource("StandardMaterial3D_eye")
+
+[node name="WeaponPivot" type="Node3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48, 1.18, -0.12)
+
+[node name="BladeMesh" type="MeshInstance3D" parent="VisualRoot/WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.92)
+mesh = SubResource("BoxMesh_blade")
+surface_material_override/0 = SubResource("StandardMaterial3D_blade")
+
+[node name="TrailBase" type="Marker3D" parent="VisualRoot/WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.18)
+
+[node name="TrailTip" type="Marker3D" parent="VisualRoot/WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.75)
+
+[node name="WeaponTrail3D" type="MeshInstance3D" parent="VisualRoot/WeaponPivot" node_paths=PackedStringArray("base_marker", "tip_marker")]
+script = ExtResource("6_trail")
+base_marker = NodePath("../TrailBase")
+tip_marker = NodePath("../TrailTip")
+trail_color = Color(1, 0.05, 0.14, 0.95)
+trail_lifetime = 0.22
+
+[node name="TelegraphRing" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+cast_shadow = 0
+mesh = SubResource("TorusMesh_telegraph")
+surface_material_override/0 = SubResource("StandardMaterial3D_telegraph")
+
+[node name="TelegraphLight" type="OmniLight3D" parent="VisualRoot"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -0.35)
+light_color = Color(1, 0.08, 0.14, 1)
+light_energy = 4.5
+omni_range = 6.5
+
+[node name="Hitbox3D" type="Area3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, -1.4)
+collision_layer = 16
+collision_mask = 32
+script = ExtResource("5_hitbox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualRoot/Hitbox3D"]
+shape = SubResource("BoxShape3D_hit")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("7_sm")
+initial_state = NodePath("Patrol")
+
+[node name="Patrol" type="Node" parent="StateMachine"]
+script = ExtResource("8_patrol")
+
+[node name="Strafe" type="Node" parent="StateMachine"]
+script = ExtResource("9_strafe")
+
+[node name="Evade" type="Node" parent="StateMachine"]
+script = ExtResource("10_evade")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("11_attack")
+
+[node name="Hitstun" type="Node" parent="StateMachine"]
+script = ExtResource("12_hitstun")

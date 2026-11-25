@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://core/crt_overlay.gd" id="1_script"]
+[ext_resource type="Shader" path="res://shaders/crt_analog.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt"]
+shader = ExtResource("2_shader")
+shader_parameter/curvature = 0.042
+shader_parameter/scanline_opacity = 0.14
+shader_parameter/scanline_density = 320.0
+shader_parameter/chromatic_aberration = 0.0022
+shader_parameter/vignette_strength = 0.42
+shader_parameter/grain_amount = 0.025
+shader_parameter/contrast = 1.06
+shader_parameter/saturation = 1.04
+
+[node name="CRTOverlay" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_script")
+
+[node name="CRTRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_crt")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

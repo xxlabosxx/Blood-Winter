@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://entities/camera/combat_camera_rig.gd" id="1_cam"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cam"]
+radius = 0.25
+
+[sub_resource type="PrismMesh" id="PrismMesh_marker"]
+size = Vector3(0.32, 0.36, 0.32)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_marker"]
+shading_mode = 0
+albedo_color = Color(0.96, 0.1, 0.2, 1)
+
+[node name="CombatCameraRig" type="Node3D"]
+script = ExtResource("1_cam")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+collision_mask = 1
+shape = SubResource("SphereShape3D_cam")
+spring_length = 5.0
+margin = 0.2
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+current = true
+fov = 62.0
+near = 0.08
+far = 180.0
+
+[node name="LockOnMarker" type="MeshInstance3D" parent="."]
+visible = false
+transform = Transform3D(1, 0, 0, 0, -1, 0, 0, 0, 1, 0, 2.3, 0)
+cast_shadow = 0
+mesh = SubResource("PrismMesh_marker")
+surface_material_override/0 = SubResource("StandardMaterial3D_marker")

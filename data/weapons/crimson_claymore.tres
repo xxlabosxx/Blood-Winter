@@ -1,0 +1,192 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://data/resources/weapon_data.gd" id="1_weapon"]
+[ext_resource type="Script" path="res://data/resources/combo_step_data.gd" id="2_step"]
+
+[sub_resource type="Resource" id="Resource_g1"]
+script = ExtResource("2_step")
+step_name = "G1: Crimson Cleave"
+is_aerial = false
+is_launcher = false
+damage_multiplier = 1.0
+startup_time = 0.09
+active_time = 0.10
+recovery_time = 0.24
+combo_window_start = 0.15
+cancel_dodge_time = 0.12
+cancel_jump_time = 0.18
+cancel_skill_time = 0.10
+forward_impulse = 5.0
+vertical_launch_force = 0.0
+attacker_air_lift = 0.0
+knockback_force = 3.2
+hitstop_duration = 0.04
+screen_shake_intensity = 0.10
+hitbox_size = Vector3(2.1, 1.4, 2.5)
+hitbox_offset = Vector3(0.0, 1.0, -1.45)
+swing_start_angle_deg = -82.0
+swing_end_angle_deg = 84.0
+swing_tilt_deg = 16.0
+
+[sub_resource type="Resource" id="Resource_g2"]
+script = ExtResource("2_step")
+step_name = "G2: Reverse Cross"
+is_aerial = false
+is_launcher = false
+damage_multiplier = 1.2
+startup_time = 0.09
+active_time = 0.11
+recovery_time = 0.26
+combo_window_start = 0.16
+cancel_dodge_time = 0.12
+cancel_jump_time = 0.19
+cancel_skill_time = 0.10
+forward_impulse = 6.2
+vertical_launch_force = 0.0
+attacker_air_lift = 0.0
+knockback_force = 4.2
+hitstop_duration = 0.05
+screen_shake_intensity = 0.14
+hitbox_size = Vector3(2.2, 1.5, 2.6)
+hitbox_offset = Vector3(0.0, 1.0, -1.5)
+swing_start_angle_deg = 88.0
+swing_end_angle_deg = -86.0
+swing_tilt_deg = -20.0
+
+[sub_resource type="Resource" id="Resource_g3"]
+script = ExtResource("2_step")
+step_name = "G3: Winter Guillotine"
+is_aerial = false
+is_launcher = false
+damage_multiplier = 1.65
+startup_time = 0.13
+active_time = 0.12
+recovery_time = 0.34
+combo_window_start = 0.28
+cancel_dodge_time = 0.18
+cancel_jump_time = 0.24
+cancel_skill_time = 0.16
+forward_impulse = 7.8
+vertical_launch_force = 2.6
+attacker_air_lift = 0.0
+knockback_force = 9.5
+hitstop_duration = 0.075
+screen_shake_intensity = 0.24
+hitbox_size = Vector3(2.4, 1.8, 2.9)
+hitbox_offset = Vector3(0.0, 1.1, -1.65)
+swing_start_angle_deg = -115.0
+swing_end_angle_deg = 110.0
+swing_tilt_deg = 52.0
+
+[sub_resource type="Resource" id="Resource_launcher"]
+script = ExtResource("2_step")
+step_name = "Launcher: Rising Fang"
+is_aerial = false
+is_launcher = true
+damage_multiplier = 1.25
+startup_time = 0.11
+active_time = 0.12
+recovery_time = 0.25
+combo_window_start = 0.17
+cancel_dodge_time = 0.15
+cancel_jump_time = 0.15
+cancel_skill_time = 0.14
+forward_impulse = 5.4
+vertical_launch_force = 10.6
+attacker_air_lift = 9.5
+knockback_force = 2.2
+hitstop_duration = 0.06
+screen_shake_intensity = 0.19
+hitbox_size = Vector3(2.1, 2.5, 2.6)
+hitbox_offset = Vector3(0.0, 1.4, -1.4)
+swing_start_angle_deg = -125.0
+swing_end_angle_deg = 65.0
+swing_tilt_deg = 78.0
+
+[sub_resource type="Resource" id="Resource_a1"]
+script = ExtResource("2_step")
+step_name = "A1: Frost Arc"
+is_aerial = true
+is_launcher = false
+damage_multiplier = 1.05
+startup_time = 0.07
+active_time = 0.10
+recovery_time = 0.20
+combo_window_start = 0.13
+cancel_dodge_time = 0.10
+cancel_jump_time = 0.16
+cancel_skill_time = 0.10
+forward_impulse = 3.2
+vertical_launch_force = 4.6
+attacker_air_lift = 4.2
+knockback_force = 1.6
+hitstop_duration = 0.045
+screen_shake_intensity = 0.12
+hitbox_size = Vector3(2.3, 1.8, 2.6)
+hitbox_offset = Vector3(0.0, 0.9, -1.35)
+swing_start_angle_deg = -90.0
+swing_end_angle_deg = 92.0
+swing_tilt_deg = 22.0
+
+[sub_resource type="Resource" id="Resource_a2"]
+script = ExtResource("2_step")
+step_name = "A2: Blood Rave"
+is_aerial = true
+is_launcher = false
+damage_multiplier = 1.2
+startup_time = 0.07
+active_time = 0.10
+recovery_time = 0.21
+combo_window_start = 0.14
+cancel_dodge_time = 0.10
+cancel_jump_time = 0.16
+cancel_skill_time = 0.10
+forward_impulse = 3.4
+vertical_launch_force = 4.8
+attacker_air_lift = 4.4
+knockback_force = 1.8
+hitstop_duration = 0.05
+screen_shake_intensity = 0.15
+hitbox_size = Vector3(2.4, 1.9, 2.6)
+hitbox_offset = Vector3(0.0, 0.9, -1.35)
+swing_start_angle_deg = 96.0
+swing_end_angle_deg = -96.0
+swing_tilt_deg = -26.0
+
+[sub_resource type="Resource" id="Resource_a3"]
+script = ExtResource("2_step")
+step_name = "A3: Crimson Helmbreaker"
+is_aerial = true
+is_launcher = false
+damage_multiplier = 1.7
+startup_time = 0.11
+active_time = 0.13
+recovery_time = 0.30
+combo_window_start = 0.26
+cancel_dodge_time = 0.16
+cancel_jump_time = 0.22
+cancel_skill_time = 0.15
+forward_impulse = 4.2
+vertical_launch_force = -9.5
+attacker_air_lift = -5.5
+knockback_force = 7.0
+hitstop_duration = 0.08
+screen_shake_intensity = 0.26
+hitbox_size = Vector3(2.5, 2.3, 2.8)
+hitbox_offset = Vector3(0.0, 0.6, -1.5)
+swing_start_angle_deg = -130.0
+swing_end_angle_deg = 120.0
+swing_tilt_deg = 74.0
+
+[resource]
+script = ExtResource("1_weapon")
+weapon_name = "Crimson Claymore"
+base_damage = 26.0
+attack_range = 2.6
+attack_speed = 1.0
+blade_length = 1.75
+blade_color = Color(0.75, 0.82, 0.90, 1.0)
+trail_color = Color(0.95, 0.08, 0.16, 1.0)
+ground_combo = Array[ExtResource("2_step")]([SubResource("Resource_g1"), SubResource("Resource_g2"), SubResource("Resource_g3")])
+launcher_step = SubResource("Resource_launcher")
+air_combo = Array[ExtResource("2_step")]([SubResource("Resource_a1"), SubResource("Resource_a2"), SubResource("Resource_a3")])

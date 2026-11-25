@@ -1,0 +1,363 @@
+[gd_scene load_steps=32 format=3]
+
+[ext_resource type="Script" path="res://scenes/test_arena/combat_gym.gd" id="1_gym"]
+[ext_resource type="PackedScene" path="res://entities/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://entities/camera/combat_camera_rig.tscn" id="3_cam"]
+[ext_resource type="PackedScene" path="res://entities/enemies/vampire_duelist/vampire_duelist.tscn" id="4_vamp"]
+[ext_resource type="PackedScene" path="res://scenes/test_arena/debug_hud.tscn" id="5_hud"]
+[ext_resource type="Script" path="res://world/torch_flicker.gd" id="6_torch"]
+[ext_resource type="Resource" path="res://data/classes/vanguard_inquisitor.tres" id="7_cls1"]
+[ext_resource type="Resource" path="res://data/classes/night_stalker.tres" id="8_cls2"]
+[ext_resource type="Script" path="res://data/resources/hunter_class_data.gd" id="9_cls_script"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_winter"]
+sky_top_color = Color(0.05, 0.08, 0.14, 1)
+sky_horizon_color = Color(0.18, 0.25, 0.35, 1)
+ground_bottom_color = Color(0.06, 0.08, 0.11, 1)
+ground_horizon_color = Color(0.16, 0.22, 0.3, 1)
+
+[sub_resource type="Sky" id="Sky_winter"]
+sky_material = SubResource("ProceduralSkyMaterial_winter")
+
+[sub_resource type="Environment" id="Environment_winter"]
+background_mode = 2
+sky = SubResource("Sky_winter")
+ambient_light_source = 2
+ambient_light_color = Color(0.28, 0.38, 0.52, 1)
+ambient_light_energy = 0.48
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 0.55
+glow_bloom = 0.18
+fog_enabled = true
+fog_light_color = Color(0.16, 0.22, 0.32, 1)
+fog_light_energy = 0.9
+fog_density = 0.032
+fog_sky_affect = 0.72
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(44, 1, 44)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(44, 1, 44)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_snow"]
+albedo_color = Color(0.84, 0.9, 0.96, 1)
+roughness = 0.92
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rune_ring"]
+top_radius = 7.2
+bottom_radius = 7.4
+height = 0.05
+radial_segments = 24
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gothic_stone"]
+albedo_color = Color(0.11, 0.12, 0.15, 1)
+roughness = 0.88
+
+[sub_resource type="TorusMesh" id="TorusMesh_blood_ring"]
+inner_radius = 6.95
+outer_radius = 7.2
+rings = 28
+ring_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crimson_glow"]
+albedo_color = Color(0.88, 0.06, 0.14, 1)
+emission_enabled = true
+emission = Color(0.95, 0.08, 0.16, 1)
+emission_energy_multiplier = 2.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
+size = Vector3(1.8, 7.6, 1.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+size = Vector3(1.8, 7.6, 1.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar_cap"]
+size = Vector3(2.2, 0.45, 2.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arch_beam"]
+size = Vector3(14.5, 1.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns"]
+size = Vector3(44, 4.5, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ns"]
+size = Vector3(44, 4.5, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
+size = Vector3(1.2, 4.5, 44)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
+size = Vector3(1.2, 4.5, 44)
+
+[sub_resource type="SphereMesh" id="SphereMesh_flame"]
+radius = 0.24
+height = 0.52
+radial_segments = 8
+rings = 4
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_snow"]
+emission_shape = 3
+emission_box_extents = Vector3(22, 1, 22)
+direction = Vector3(0.15, -1, 0.08)
+spread = 14.0
+initial_velocity_min = 2.6
+initial_velocity_max = 4.4
+gravity = Vector3(0, -1.2, 0)
+scale_min = 0.06
+scale_max = 0.13
+
+[sub_resource type="BoxMesh" id="BoxMesh_snowflake"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_snowflake"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.92, 0.96, 1, 0.82)
+
+[node name="CombatGym" type="Node3D"]
+script = ExtResource("1_gym")
+available_classes = Array[ExtResource("9_cls_script")]([ExtResource("7_cls1"), ExtResource("8_cls2")])
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_winter")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.766044, -0.454519, 0.454519, 0, 0.707107, 0.707107, -0.642788, -0.541675, 0.541675, 0, 18, 0)
+light_color = Color(0.76, 0.86, 1, 1)
+light_energy = 1.25
+shadow_enabled = true
+shadow_blur = 0.0
+directional_shadow_mode = 2
+directional_shadow_max_distance = 55.0
+
+[node name="ArenaGeometry" type="Node3D" parent="."]
+
+[node name="SnowFloor" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/SnowFloor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaGeometry/SnowFloor"]
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_snow")
+
+[node name="CenterDais" type="MeshInstance3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
+mesh = SubResource("CylinderMesh_rune_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="BloodRuneRing" type="MeshInstance3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+cast_shadow = 0
+mesh = SubResource("TorusMesh_blood_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_crimson_glow")
+
+[node name="PillarNW" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 3.8, -7)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/PillarNW"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Shaft" type="MeshInstance3D" parent="ArenaGeometry/PillarNW"]
+mesh = SubResource("BoxMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="SnowCap" type="MeshInstance3D" parent="ArenaGeometry/PillarNW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+mesh = SubResource("BoxMesh_pillar_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_snow")
+
+[node name="TorchFlame" type="MeshInstance3D" parent="ArenaGeometry/PillarNW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, -0.8, 1.05)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_flame")
+surface_material_override/0 = SubResource("StandardMaterial3D_crimson_glow")
+
+[node name="TorchLight" type="OmniLight3D" parent="ArenaGeometry/PillarNW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, -0.7, 1.25)
+light_color = Color(1, 0.22, 0.16, 1)
+light_energy = 4.4
+shadow_enabled = true
+omni_range = 12.5
+script = ExtResource("6_torch")
+
+[node name="PillarNE" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 3.8, -7)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/PillarNE"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Shaft" type="MeshInstance3D" parent="ArenaGeometry/PillarNE"]
+mesh = SubResource("BoxMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="SnowCap" type="MeshInstance3D" parent="ArenaGeometry/PillarNE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+mesh = SubResource("BoxMesh_pillar_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_snow")
+
+[node name="TorchFlame" type="MeshInstance3D" parent="ArenaGeometry/PillarNE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, -0.8, 1.05)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_flame")
+surface_material_override/0 = SubResource("StandardMaterial3D_crimson_glow")
+
+[node name="TorchLight" type="OmniLight3D" parent="ArenaGeometry/PillarNE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, -0.7, 1.25)
+light_color = Color(1, 0.22, 0.16, 1)
+light_energy = 4.4
+shadow_enabled = true
+omni_range = 12.5
+script = ExtResource("6_torch")
+
+[node name="PillarSW" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 3.8, 7)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/PillarSW"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Shaft" type="MeshInstance3D" parent="ArenaGeometry/PillarSW"]
+mesh = SubResource("BoxMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="SnowCap" type="MeshInstance3D" parent="ArenaGeometry/PillarSW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+mesh = SubResource("BoxMesh_pillar_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_snow")
+
+[node name="TorchFlame" type="MeshInstance3D" parent="ArenaGeometry/PillarSW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, -0.8, -1.05)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_flame")
+surface_material_override/0 = SubResource("StandardMaterial3D_crimson_glow")
+
+[node name="TorchLight" type="OmniLight3D" parent="ArenaGeometry/PillarSW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, -0.7, -1.25)
+light_color = Color(1, 0.22, 0.16, 1)
+light_energy = 4.4
+shadow_enabled = true
+omni_range = 12.5
+script = ExtResource("6_torch")
+
+[node name="PillarSE" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 3.8, 7)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/PillarSE"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Shaft" type="MeshInstance3D" parent="ArenaGeometry/PillarSE"]
+mesh = SubResource("BoxMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="SnowCap" type="MeshInstance3D" parent="ArenaGeometry/PillarSE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+mesh = SubResource("BoxMesh_pillar_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_snow")
+
+[node name="TorchFlame" type="MeshInstance3D" parent="ArenaGeometry/PillarSE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, -0.8, -1.05)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_flame")
+surface_material_override/0 = SubResource("StandardMaterial3D_crimson_glow")
+
+[node name="TorchLight" type="OmniLight3D" parent="ArenaGeometry/PillarSE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, -0.7, -1.25)
+light_color = Color(1, 0.22, 0.16, 1)
+light_energy = 4.4
+shadow_enabled = true
+omni_range = 12.5
+script = ExtResource("6_torch")
+
+[node name="GothicArchNorth" type="MeshInstance3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.2, -7)
+mesh = SubResource("BoxMesh_arch_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="GothicArchSouth" type="MeshInstance3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.2, 7)
+mesh = SubResource("BoxMesh_arch_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="WallNorth" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, -21.4)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/WallNorth"]
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaGeometry/WallNorth"]
+mesh = SubResource("BoxMesh_wall_ns")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="WallSouth" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, 21.4)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/WallSouth"]
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaGeometry/WallSouth"]
+mesh = SubResource("BoxMesh_wall_ns")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="WallWest" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.4, 2.25, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/WallWest"]
+shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaGeometry/WallWest"]
+mesh = SubResource("BoxMesh_wall_ew")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="WallEast" type="StaticBody3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.4, 2.25, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaGeometry/WallEast"]
+shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaGeometry/WallEast"]
+mesh = SubResource("BoxMesh_wall_ew")
+surface_material_override/0 = SubResource("StandardMaterial3D_gothic_stone")
+
+[node name="SnowfallParticles" type="GPUParticles3D" parent="ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13, 0)
+amount = 420
+lifetime = 4.6
+preprocess = 3.0
+visibility_aabb = AABB(-24, -15, -24, 48, 18, 48)
+process_material = SubResource("ParticleProcessMaterial_snow")
+draw_pass_1 = SubResource("BoxMesh_snowflake")
+material_override = SubResource("StandardMaterial3D_snowflake")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 4.5)
+camera_rig_path = NodePath("../CombatCameraRig")
+
+[node name="CombatCameraRig" parent="." instance=ExtResource("3_cam")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 4.5)
+target_path = NodePath("../Player")
+
+[node name="VampireDuelist" parent="." instance=ExtResource("4_vamp")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.1, -4.5)
+
+[node name="DebugHUD" parent="." instance=ExtResource("5_hud")]

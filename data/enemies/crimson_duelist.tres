@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/resources/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+enemy_name = "Crimson Duelist"
+max_health = 180.0
+patrol_speed = 3.2
+chase_speed = 6.4
+strafe_speed = 4.8
+detection_range = 20.0
+preferred_combat_distance = 3.8
+attack_range = 3.1
+attack_damage = 28.0
+telegraph_duration = 0.50
+attack_active_duration = 0.14
+attack_recovery_duration = 0.58
+attack_lunge_speed = 14.0
+attack_cooldown = 1.15
+evade_chance = 0.45
+evade_speed = 12.2
+evade_duration = 0.24
+evade_cooldown = 2.1
+hitstun_duration = 0.36
+knockback_resistance = 0.12
+gravity_scale_when_juggled = 0.34
+air_juggle_hover_impulse = 4.5
