@@ -83,10 +83,17 @@ func _clone_info(src: DamageInfo) -> DamageInfo:
 	copy.source = src.source
 	copy.knockback_vector = src.knockback_vector
 	copy.launch_force = src.launch_force
+	copy.launch_vector = src.launch_vector
+	copy.hitstun_duration = src.hitstun_duration
+	copy.stagger_power = src.stagger_power
+	copy.hitstop_frames = src.hitstop_frames
 	copy.hitstop_duration = src.hitstop_duration
 	copy.screen_shake = src.screen_shake
 	copy.is_launcher = src.is_launcher
 	copy.is_aerial = src.is_aerial
 	copy.is_counter = src.is_counter
+	copy.force_state = src.force_state
+	copy.attacker_forward_velocity = src.attacker_forward_velocity
+	copy.impact_direction = src.impact_direction
 	copy.hit_position = src.hit_position
 	return copy

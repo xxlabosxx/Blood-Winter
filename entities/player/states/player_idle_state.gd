@@ -7,6 +7,7 @@ func enter(previous_state: StringName, data: Dictionary = {}) -> void:
 	player.set_combo_debug_label("Idle")
 	player.cancel_window_status = "-"
 	player.reset_weapon_pose()
+	player.play_character_animation(&"Idle", 1.0, 0.20)
 
 
 func physics_update(delta: float) -> void:
@@ -22,6 +23,7 @@ func physics_update(delta: float) -> void:
 		request_transition(&"Move")
 		return
 
+	player.face_locked_target(16.0, delta)
 	player.velocity.x = move_toward(player.velocity.x, 0.0, 28.0 * delta)
 	player.velocity.z = move_toward(player.velocity.z, 0.0, 28.0 * delta)
 	player.velocity.y = 0.0

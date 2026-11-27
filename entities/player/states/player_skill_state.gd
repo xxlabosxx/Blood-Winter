@@ -31,11 +31,13 @@ func enter(previous_state: StringName, data: Dictionary = {}) -> void:
 			player.set_parry_aura_visible(true)
 			player.set_combo_debug_label("Skill: Crimson Parry")
 			player.cancel_window_status = "PARRY WINDOW"
-			player.set_weapon_swing_pose(-15.0, -35.0, 48.0)
+			player.reset_weapon_pose()
+			player.play_character_animation(&"Skill_Parry", 1.0, 0.10, true)
 		HunterClassData.SpecialSkillType.SHADOW_DASH:
 			player.health.is_invulnerable = true
 			player.set_combo_debug_label("Skill: Shadow Dash")
 			player.cancel_window_status = "SHADOW BLINK"
+			player.play_character_animation(&"Dodge", 1.5, 0.10, true)
 			player.spawn_dodge_ghost(Color(0.25, 0.04, 0.12, 0.78), 0.34)
 			if player.weapon_trail != null:
 				player.weapon_trail.emitting = true
@@ -91,8 +93,9 @@ func _update_crimson_parry(delta: float) -> void:
 				request_transition(&"Idle" if player.is_on_floor() else &"Air")
 	else:
 		_counter_elapsed += delta
-		var swing_t: float = clampf(_counter_elapsed / 0.16, 0.0, 1.0)
-		player.set_weapon_swing_pose(lerpf(-120.0, 125.0, swing_t), 0.0, 20.0)
+		if player.character_model == null:
+			var swing_t: float = clampf(_counter_elapsed / 0.16, 0.0, 1.0)
+			player.set_weapon_swing_pose(lerpf(-120.0, 125.0, swing_t), 0.0, 20.0)
 		player.velocity.x = move_toward(player.velocity.x, 0.0, 22.0 * delta)
 		player.velocity.z = move_toward(player.velocity.z, 0.0, 22.0 * delta)
 		player.move_and_slide()
@@ -111,6 +114,7 @@ func _begin_parry_counter() -> void:
 	player.set_parry_aura_visible(false)
 	player.set_combo_debug_label("COUNTER: Crimson Riposte!")
 	player.cancel_window_status = "COUNTER-SLASH"
+	player.play_character_animation(&"Attack_Launcher", 1.5, 0.02, true)
 
 	if player.last_parried_attacker != null and is_instance_valid(player.last_parried_attacker):
 		var to_attacker: Vector3 = player.last_parried_attacker.global_position - player.global_position
@@ -126,10 +130,16 @@ func _begin_parry_counter() -> void:
 	info.source = player
 	info.knockback_vector = _dash_dir * 10.5
 	info.launch_force = 7.2
+	info.launch_vector = Vector3(_dash_dir.x * 10.5, 7.2, _dash_dir.z * 10.5)
+	info.hitstun_duration = 0.55
+	info.stagger_power = 100.0
+	info.hitstop_frames = 6
 	info.hitstop_duration = 0.09
 	info.screen_shake = 0.28
 	info.is_launcher = true
 	info.is_counter = true
+	info.attacker_forward_velocity = Vector3(player.velocity.x, 0.0, player.velocity.z)
+	info.impact_direction = (_dash_dir + Vector3.UP * 0.5).normalized()
 	if player.hitbox != null:
 		player.hitbox.activate(info, Vector3(3.4, 2.2, 3.4), Vector3(0.0, 1.0, -1.6))
 
@@ -147,11 +157,15 @@ func _update_shadow_dash(delta: float) -> void:
 	player.velocity.x = _dash_dir.x * dash_speed
 	player.velocity.z = _dash_dir.z * dash_speed
 	player.velocity.y = 0.0
-	player.set_weapon_swing_pose(lerpf(-110.0, 115.0, clampf(_elapsed / duration, 0.0, 1.0)), 6.0, -14.0)
+	if player.character_model == null:
+		player.set_weapon_swing_pose(lerpf(-110.0, 115.0, clampf(_elapsed / duration, 0.0, 1.0)), 6.0, -14.0)
 	player.move_and_slide()
 
 	if _elapsed >= duration:
-		player.velocity *= 0.35
+		if player.is_on_floor() and player.is_holding_slide():
+			request_transition(&"Slide", {"direction": _dash_dir, "speed": minf(dash_speed * 0.82, player.class_data.slide_max_speed)})
+			return
+		player.velocity *= 0.45
 		request_transition(&"Idle" if player.is_on_floor() else &"Air")
 
 
@@ -164,7 +178,13 @@ func _activate_shadow_dash_hitbox() -> void:
 	info.source = player
 	info.knockback_vector = _dash_dir * 6.5
 	info.launch_force = 5.5
+	info.launch_vector = Vector3(_dash_dir.x * 6.5, 5.5, _dash_dir.z * 6.5)
+	info.hitstun_duration = 0.48
+	info.stagger_power = 55.0
+	info.hitstop_frames = 4
 	info.hitstop_duration = 0.055
 	info.screen_shake = 0.18
 	info.is_counter = true
+	info.attacker_forward_velocity = Vector3(player.velocity.x, 0.0, player.velocity.z)
+	info.impact_direction = (_dash_dir + Vector3.UP * 0.35).normalized()
 	player.hitbox.activate(info, Vector3(2.4, 1.8, 2.8), Vector3(0.0, 1.0, -0.8))

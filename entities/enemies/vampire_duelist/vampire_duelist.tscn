@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3]
+[gd_scene load_steps=29 format=3]
 
 [ext_resource type="Script" path="res://entities/enemies/vampire_duelist/vampire_duelist.gd" id="1_vamp"]
 [ext_resource type="Resource" path="res://data/enemies/crimson_duelist.tres" id="2_data"]
@@ -12,6 +12,9 @@
 [ext_resource type="Script" path="res://entities/enemies/vampire_duelist/states/vampire_evade_state.gd" id="10_evade"]
 [ext_resource type="Script" path="res://entities/enemies/vampire_duelist/states/vampire_attack_state.gd" id="11_attack"]
 [ext_resource type="Script" path="res://entities/enemies/vampire_duelist/states/vampire_hitstun_state.gd" id="12_hitstun"]
+[ext_resource type="Script" path="res://combat/enemy_reaction_component.gd" id="13_reaction"]
+[ext_resource type="PackedScene" path="res://assets/models/enemies/vampire_duelist_lunacid.glb" id="14_vampire_model"]
+[ext_resource type="Script" path="res://combat/death_ragdoll_component.gd" id="15_death_ragdoll"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -88,6 +91,12 @@ shape = SubResource("CapsuleShape3D_body")
 script = ExtResource("3_health")
 max_health = 180.0
 
+[node name="EnemyReactionComponent" type="Node" parent="."]
+script = ExtResource("13_reaction")
+
+[node name="DeathRagdollComponent" type="Node" parent="."]
+script = ExtResource("15_death_ragdoll")
+
 [node name="Hurtbox3D" type="Area3D" parent="."]
 collision_layer = 64
 collision_mask = 8
@@ -99,26 +108,34 @@ shape = SubResource("CapsuleShape3D_hurt")
 
 [node name="VisualRoot" type="Node3D" parent="."]
 
+[node name="CharacterModel" parent="VisualRoot" instance=ExtResource("14_vampire_model")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
 [node name="BodyMesh" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
 mesh = SubResource("CylinderMesh_body")
 
 [node name="CapeMesh" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 0, 0.88, 0.32)
 mesh = SubResource("BoxMesh_cape")
 surface_material_override/0 = SubResource("StandardMaterial3D_cape")
 
 [node name="HeadMesh" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
 mesh = SubResource("BoxMesh_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_pale")
 
 [node name="EyeLeft" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 1.74, -0.16)
 mesh = SubResource("BoxMesh_eye")
 surface_material_override/0 = SubResource("StandardMaterial3D_eye")
 
 [node name="EyeRight" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 1.74, -0.16)
 mesh = SubResource("BoxMesh_eye")
 surface_material_override/0 = SubResource("StandardMaterial3D_eye")

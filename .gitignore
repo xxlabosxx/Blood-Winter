@@ -23,3 +23,17 @@ Thumbs.db
 *.tmp
 *.swp
 *~
+
+# Markdown files
+*.md
+*.MD
+
+# Blender backup files
+*.blend1
+*.blend2
+
+# Local AI agent skills & Python caches
+.agents/
+__pycache__/
+*.pyc
+

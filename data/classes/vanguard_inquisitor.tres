@@ -7,7 +7,7 @@
 script = ExtResource("1_class")
 class_name_display = "Vanguard Inquisitor"
 description = "Disciplined gothic slayer. Excels at heavy claymore launchers and optional Crimson Parry counter-slashes."
-max_health = 130.0
+max_health = 100.0
 move_speed = 7.6
 jump_velocity = 9.4
 dodge_speed_multiplier = 2.15
@@ -18,7 +18,7 @@ loot_bonus_multiplier = 1.05
 identification_bonus = 0.15
 special_skill = 1
 special_skill_name = "Crimson Parry"
-special_skill_cooldown = 1.25
+special_skill_cooldown = 3.0
 parry_window = 0.30
 parry_counter_damage_multiplier = 2.1
 shadow_dash_distance_multiplier = 2.6

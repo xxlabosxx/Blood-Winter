@@ -18,6 +18,7 @@ func enter(previous_state: StringName, data: Dictionary = {}) -> void:
 	var strafe_sign: float = float(data.get("strafe_sign", 1.0))
 	var right_dir: Vector3 = Vector3(-to_player.z, 0.0, to_player.x) * strafe_sign
 	_evade_dir = (right_dir * 0.8 - to_player * 0.6).normalized()
+	vampire.play_timed_vampire_animation(&"Evade", vampire.enemy_data.evade_duration, 0.10, true)
 	vampire.spawn_evade_ghost()
 
 

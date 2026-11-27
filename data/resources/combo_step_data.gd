@@ -6,6 +6,7 @@ extends Resource
 @export var step_name: String = "Slash"
 @export var is_aerial: bool = false
 @export var is_launcher: bool = false
+@export var is_air_slam: bool = false
 
 @export_group("Damage & Timing")
 @export var damage_multiplier: float = 1.0
@@ -15,7 +16,10 @@ extends Resource
 @export var combo_window_start: float = 0.17
 
 @export_group("Animation Canceling Windows")
-## Earliest elapsed time (before attack_speed scaling) at which Dodge can cancel this attack.
+## Bayonetta 2 rule: Dodge Cancel is allowed on any frame (Startup, Active, Recovery) by default.
+## Set false for heavy specials/ultimates that commit without dodge canceling.
+@export var allow_anytime_dodge_cancel: bool = true
+## Earliest elapsed time (before attack_speed scaling) at which Dodge can cancel this attack (when allow_anytime_dodge_cancel is false).
 @export var cancel_dodge_time: float = 0.14
 ## Earliest elapsed time at which Jump can cancel this attack.
 @export var cancel_jump_time: float = 0.20
@@ -30,6 +34,14 @@ extends Resource
 
 @export_group("Game Feel & Hitbox")
 @export var hitstop_duration: float = 0.045
+## Freeze frames at 60 FPS (3-6 frames standard in Bayonetta/PlatinumGames architecture).
+@export var hitstop_frames: int = 4
+## Base hitstun inflicted on the target in seconds (subject to 0.95^N decay in air combos).
+@export var hitstun_duration: float = 0.42
+## Poise damage subtracted from target's invisible Super Armor / Poise pool.
+@export var stagger_power: float = 35.0
+## Optional forced reaction state (e.g., GROUND_BOUNCE, SPIN_BLOWBACK, KNOCKDOWN).
+@export var force_reaction_state: StringName = &""
 @export var screen_shake_intensity: float = 0.12
 @export var hitbox_size: Vector3 = Vector3(1.8, 1.4, 2.2)
 @export var hitbox_offset: Vector3 = Vector3(0.0, 1.0, -1.35)
@@ -67,6 +79,8 @@ func can_chain_at(elapsed: float, speed_mult: float = 1.0) -> bool:
 
 
 func can_cancel_with_dodge(elapsed: float, speed_mult: float = 1.0) -> bool:
+	if allow_anytime_dodge_cancel:
+		return true
 	return cancel_dodge_time >= 0.0 and elapsed >= (cancel_dodge_time / maxf(0.1, speed_mult))
 
 

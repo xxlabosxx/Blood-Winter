@@ -13,7 +13,9 @@ extends Resource
 @export_group("Combo Chains")
 @export var ground_combo: Array[ComboStepData] = []
 @export var launcher_step: ComboStepData = null
+@export var stinger_step: ComboStepData = null
 @export var air_combo: Array[ComboStepData] = []
+@export var air_slam_step: ComboStepData = null
 
 
 func get_ground_step(index: int) -> ComboStepData:

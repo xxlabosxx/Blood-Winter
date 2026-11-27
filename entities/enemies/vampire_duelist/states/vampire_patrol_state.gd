@@ -28,9 +28,17 @@ func physics_update(delta: float) -> void:
 		vampire.velocity.x = dir.x * vampire.enemy_data.patrol_speed
 		vampire.velocity.z = dir.z * vampire.enemy_data.patrol_speed
 		vampire.face_direction(dir, 6.0, delta)
+		if vampire.reaction_component != null and vampire.reaction_component.is_dizzy:
+			vampire.play_vampire_animation(&"Dizzy", 1.0, 0.10)
+		else:
+			vampire.play_vampire_animation(&"Patrol_Walk", 1.0, 0.12)
 	else:
 		vampire.velocity.x = 0.0
 		vampire.velocity.z = 0.0
+		if vampire.reaction_component != null and vampire.reaction_component.is_dizzy:
+			vampire.play_vampire_animation(&"Dizzy", 1.0, 0.10)
+		else:
+			vampire.play_vampire_animation(&"Idle", 1.0, 0.12)
 
 	if not vampire.is_on_floor():
 		vampire.velocity.y -= VampireDuelist.GRAVITY * delta

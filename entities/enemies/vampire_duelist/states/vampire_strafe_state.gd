@@ -56,6 +56,16 @@ func physics_update(delta: float) -> void:
 	vampire.velocity.x = move_toward(vampire.velocity.x, desired_velocity.x, 20.0 * delta)
 	vampire.velocity.z = move_toward(vampire.velocity.z, desired_velocity.z, 20.0 * delta)
 
+	if vampire.reaction_component != null and vampire.reaction_component.is_dizzy:
+		vampire.play_vampire_animation(&"Dizzy", 1.1, 0.08)
+	elif dist > vampire.enemy_data.preferred_combat_distance + 0.8:
+		# Closing distance directly toward the Hunter -> brisk forward stride
+		vampire.play_vampire_animation(&"Patrol_Walk", 1.35, 0.10)
+	else:
+		var planar_spd: float = Vector2(vampire.velocity.x, vampire.velocity.z).length()
+		var strafe_rate: float = clampf(planar_spd / maxf(1.0, vampire.enemy_data.strafe_speed), 0.75, 1.45)
+		vampire.play_vampire_animation(&"Strafe", strafe_rate, 0.10)
+
 	if not vampire.is_on_floor():
 		vampire.velocity.y -= VampireDuelist.GRAVITY * delta
 	else:
